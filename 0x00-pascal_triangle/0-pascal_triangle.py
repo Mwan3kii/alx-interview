@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Returns a list of lists of intergers rep Pascals triangle"""
 def pascal_triangle(n):
+    """Returns an empty list if n <= 0"""
     if n <= 0:
         return []
     triangle = [[1]]
