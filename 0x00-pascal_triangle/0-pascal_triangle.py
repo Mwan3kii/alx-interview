@@ -17,10 +17,12 @@ def pascal_triangle(n):
     if n <= 0:
         return []
     triangle = [[1]]
-    for i in range(1, n):
-        row = [1]
-        for k in range(1, i):
-            row.append(triangle[i - 1][k - 1] + triangle[i - 1][k])
-        row.append(1)
-        triangle.append(row)
+    if n > 0:
+        for i in range(1, n + 1):
+            level = []
+            row = 1
+            for j in range(1, i + 1):
+                level.append(row)
+                row = row * (i - j) // j
+            triangle.append(level)
     return triangle
