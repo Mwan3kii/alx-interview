@@ -7,7 +7,7 @@ Returns a list of lists of intergers rep Pascals triangle.
 def pascal_triangle(n):
     """
     Pascals triangle in python.
-    
+
     Args:
         n (int): The number of rows of Pascal's triangle to generate.
 
