@@ -16,12 +16,14 @@ status_codes_count = {
 }
 line_count = 0
 
+
 def print_stats():
     """ Print the current statistics """
     print(f"File size: {total_size}")
     for code in sorted(status_codes_count.keys()):
         if status_codes_count[code] > 0:
             print(f"{code}: {status_codes_count[code]}")
+
 
 def signal_handler(sig, frame):
     """ Handle keyboard interruption (CTRL + C) """
