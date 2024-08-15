@@ -6,7 +6,7 @@ import signal
 # Initialize counters and accumulators
 if __name__ == '__main__':
     total_size = 0
-    status_codes_count = {
+    status_codes = {
         "200": 0,
         "301": 0,
         "400": 0,
@@ -18,20 +18,17 @@ if __name__ == '__main__':
         }
     line_count = 0
 
-
     def print_stats():
         """Print current statistics"""
         print(f"File size: {total_size}")
-        for code in sorted(status_codes_count.keys()):
-            if status_codes_count[code] > 0:
-                print(f"{code}: {status_codes_count[code]}")
-
+        for code in sorted(status_codes.keys()):
+            if status_codes[code] > 0:
+                print(f"{code}: {status_codes[code]}")
 
     def signal_handler(sig, frame):
         """Handle keyboard interruption"""
         print_stats()
         sys.exit(0)
-
 
     # Register the signal handler for keyboard interruption
     signal.signal(signal.SIGINT, signal_handler)
@@ -45,8 +42,8 @@ if __name__ == '__main__':
             status_code = parts[-2]
             file_size = parts[-1]
 
-            if status_code in status_codes_count:
-                status_codes_count[status_code] += 1
+            if status_code in status_codes:
+                status_codes[status_code] += 1
 
             try:
                 total_size += int(file_size)
@@ -55,7 +52,6 @@ if __name__ == '__main__':
             line_count += 1
             if line_count % 10 == 0:
                 print_stats()
-
 
     except KeyboardInterrupt:
         print_stats()
