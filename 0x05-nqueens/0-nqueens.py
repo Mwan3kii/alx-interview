@@ -40,20 +40,21 @@ def create_board(size):
     return [0 * size for i in range(size)]
 
 
-if len(sys.argv) != 2:
-    print("Usage: nqueens N")
-    exit(1)
 
-try:
-    n = int(sys.argv[1])
-except BaseException:
-    print("N must be a number")
-    exit(1)
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: nqueens N")
+        sys.exit(1)
 
-if (n < 4):
-    print("N must be at least 4")
-    exit(1)
+    try:
+        n = int(sys.argv[1])
+    except ValueError:
+        print("N must be a number")
+        sys.exit(1)
 
-board = create_board(int(n))
-row = 0
-solve_nqueens(board, row, int(n))
+    if n < 4:
+        print("N must be at least 4")
+        sys.exit(1)
+
+    board = create_board(n)
+    solve_nqueens(board, 0, n)
