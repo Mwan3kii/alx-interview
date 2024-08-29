@@ -8,13 +8,16 @@ def print_usage_and_exit():
     print("Usage: nqueens N")
     sys.exit(1)
 
+
 def print_number_error_and_exit():
     print("N must be a number")
     sys.exit(1)
 
+
 def print_value_error_and_exit():
     print("N must be at least 4")
     sys.exit(1)
+
 
 def is_valid(board, row, col, N):
     # Check this column
@@ -24,6 +27,7 @@ def is_valid(board, row, col, N):
            board[i] + i == col + row:
             return False
     return True
+
 
 def solve_nqueens(N):
     def solve(board, row):
@@ -40,6 +44,7 @@ def solve_nqueens(N):
     board = [-1] * N
     solve(board, 0)
     return solutions
+
 
 def main():
     if len(sys.argv) != 2:
