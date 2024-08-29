@@ -2,24 +2,25 @@
 """A program that solves n queens problem"""
 import sys
 
+
 def print_board(board, n):
-    """Print allocated positions to the queen"""
-    b = []
+    """Print positions of queen on board"""
+    solution = []
 
     for i in range(n):
         for j in range(n):
             if j == board[i]:
-                b.append([i, j])
-    print(b)
+                solution.append([i, j])
+    print(solution)
 
 
-def is_position_safe(board, i, j, r):
-    """Checks if the position is safe for the queen"""
+def is_safe(board, i, j, r):
+    """Checks if placing queen at row column is safe"""
     return board[i] in (j, j - i + r, i - r + j)
 
 
-def safe_positions(board, row, n):
-    """Find all safe positions where the queen can be allocated"""
+def solve_nqueens(board, row, n):
+    """Solves n queens problem using backtracking"""
     if row == n:
         print_board(board, n)
 
@@ -27,15 +28,15 @@ def safe_positions(board, row, n):
         for j in range(n):
             allowed = True
             for i in range(row):
-                if is_position_safe(board, i, j, row):
+                if is_safe(board, i, j, row):
                     allowed = False
             if allowed:
                 board[row] = j
-                safe_positions(board, row + 1, n)
+                solve_nqueens(board, row + 1, n)
 
 
 def create_board(size):
-    """Generates the board"""
+    """Generates the board with empty colunms"""
     return [0 * size for i in range(size)]
 
 
@@ -55,4 +56,4 @@ if (n < 4):
 
 board = create_board(int(n))
 row = 0
-safe_positions(board, row, int(n))
+solve_nqueens(board, row, int(n))
