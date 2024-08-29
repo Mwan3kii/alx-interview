@@ -40,7 +40,6 @@ def create_board(size):
     return [0 * size for i in range(size)]
 
 
-
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: nqueens N")
