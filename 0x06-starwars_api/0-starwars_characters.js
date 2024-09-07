@@ -7,18 +7,18 @@ if (process.argv.length > 2) {
     if (err) {
       console.log(err);
     }
-    const charactersURL = JSON.parse(body).characters;
-    const charactersName = charactersURL.map(
+    const charsURL = JSON.parse(body).characters;
+    const charsName = charsURL.map(
       url => new Promise((resolve, reject) => {
-        request(url, (promiseErr, __, charactersReqBody) => {
+        request(url, (promiseErr, __, charsReqBody) => {
           if (promiseErr) {
             reject(promiseErr);
           }
-          resolve(JSON.parse(charactersReqBody).name);
+          resolve(JSON.parse(charsReqBody).name);
         });
       }));
 
-    Promise.all(charactersName)
+    Promise.all(charsName)
       .then(names => console.log(names.join('\n')))
       .catch(allErr => console.log(allErr));
   });
