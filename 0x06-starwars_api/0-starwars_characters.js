@@ -1,6 +1,26 @@
 #!/usr/bin/node
 
-const request = require('request');
+const request = require('request-promise-native');
+
+async function fetchCharacters (movieId) {
+  const url = `https://swapi.dev/api/films/${movieId}/`;
+
+  try {
+    const filmData = await request({ uri: url, json: true });
+    const charactersUrls = filmData.characters;
+
+    const characterPromises = charactersUrls.map(url => request({ uri: url, json: true }));
+    const charactersData = await Promise.all(characterPromises);
+
+    charactersData.forEach(character => {
+      console.log(character.name);
+    });
+  } catch (error) {
+    console.error('Error:', error.message);
+    process.exit(1);
+  }
+}
+
 const movieId = process.argv[2];
 
 if (!movieId) {
@@ -8,36 +28,4 @@ if (!movieId) {
   process.exit(1);
 }
 
-const url = `https://swapi.dev/api/films/${movieId}/`;
-
-request(url, (error, response, body) => {
-  if (error) {
-    console.error('Error fetching film data:', error);
-    process.exit(1);
-  }
-
-  if (response.statusCode !== 200) {
-    console.error(`Error: Unable to fetch film data for Movie ID ${movieId}`);
-    process.exit(1);
-  }
-
-  const filmData = JSON.parse(body);
-  const characters = filmData.characters;
-
-  characters.forEach(characterUrl => {
-    request(characterUrl, (error, response, body) => {
-      if (error) {
-        console.error('Error fetching character data:', error);
-        return;
-      }
-
-      if (response.statusCode !== 200) {
-        console.error(`Error: Unable to fetch character data from ${characterUrl}`);
-        return;
-      }
-
-      const characterData = JSON.parse(body);
-      console.log(characterData.name);
-    });
-  });
-});
+fetchCharacters(movieId);
