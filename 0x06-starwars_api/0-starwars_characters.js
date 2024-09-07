@@ -4,33 +4,40 @@ const request = require('request');
 const movieId = process.argv[2];
 
 if (!movieId) {
-  console.log('Usage: ./0-starwars_characters.js <movie_id>');
+  console.error('Usage: ./0-starwars_characters.js <Movie ID>');
   process.exit(1);
 }
-const url = `https://swapi-api.alx-tools.com/api/films/${movieId}/`;
+
+const url = `https://swapi.dev/api/films/${movieId}/`;
+
 request(url, (error, response, body) => {
   if (error) {
-    console.error('Error:', error);
-    return;
+    console.error('Error fetching film data:', error);
+    process.exit(1);
   }
 
-  if (response.statusCode === 200) {
-    const movieData = JSON.parse(body);
-    const characters = movieData.characters;
-    characters.forEach(characterUrl => {
-      request(characterUrl, (charError, charResponse, charBody) => {
-        if (charError) {
-          console.error('Error:', charError);
-          return;
-        }
+  if (response.statusCode !== 200) {
+    console.error(`Error: Unable to fetch film data for Movie ID ${movieId}`);
+    process.exit(1);
+  }
 
-        if (charResponse.statusCode === 200) {
-          const characterData = JSON.parse(charBody);
-          console.log(characterData.name);
-        }
-      });
+  const filmData = JSON.parse(body);
+  const characters = filmData.characters;
+
+  characters.forEach(characterUrl => {
+    request(characterUrl, (error, response, body) => {
+      if (error) {
+        console.error('Error fetching character data:', error);
+        return;
+      }
+
+      if (response.statusCode !== 200) {
+        console.error(`Error: Unable to fetch character data from ${characterUrl}`);
+        return;
+      }
+
+      const characterData = JSON.parse(body);
+      console.log(characterData.name);
     });
-  } else {
-    console.log(`Error: Unable to fetch movie with ID ${movieId}`);
-  }
+  });
 });
