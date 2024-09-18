@@ -6,6 +6,7 @@ def makeChange(coins, total):
     """Return fewest no of coins needed to meet total"""
     if total <= 0:
         return 0
+    coins.sort(reverse=True)
     dp = [float('inf')] * (total + 1)
     dp[0] = 0
     for coin in coins:
