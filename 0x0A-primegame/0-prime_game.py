@@ -1,7 +1,9 @@
 #!/usr/bin/python3
+"""Prime game between maria and ben"""
 
 
 def isWinner(x, nums):
+    """Determine winner of game each round"""
     if not nums or x <= 0:
         return None
     max_n = max(nums)
